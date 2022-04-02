@@ -37,11 +37,13 @@ const typeDefs = gql`
     user(id: ID!): User
     userprofile(user:ID!): User
     collections: [Collection]
-    collections(user: ID!): [Collection]
+    collection(collection: ID!): Collection
+    likedCollections(user: ID!): [Collection]
     paintings: [Painting]
+    painting(painting: ID!): Painting
     paintingsCollection(collection: ID!): [Painting]
-    likedPaintings(user: ID!): Painting
-    cart(user: ID!): [Cart]
+    likedPaintings(user: ID!): [Painting]
+    cart(user: ID!): [Painting]
     me: User
   }
 

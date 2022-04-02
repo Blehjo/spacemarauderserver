@@ -1,68 +1,52 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { Message, Thread, Profile, User } = require("../models");
+const { Painting, Collection, User } = require("../models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
     // get all users
     users: async () => {
-      return User.find()
+      return User.find().populate("likes").populate("cart");
     },
     // need to get one user by id for signup and so can add user id to profile schema
     user: async (parent, args) => {
-      return await User.findById(args.id).populate("profile");
-    },
-    // get all profiles
-    profiles: async () => {
-      return Profile.find({}).populate("user");
-    },
-    // get one profile by id -this is to for the dashboard
-    profile: async (parent, args) => {
-      return Profile.findById(args.id).populate("user");
+      return await User.findById(args.id).populate("likes").populate("cart");
     },
     // get the profile of the user that is logged in 
-    userprofile: async(parent, args) =>{
-      return Profile.findOne(args).populate("user")
+    userprofile: async (parent, args) => {
+      return User.findOne(args).populate("likes").populate("cart");
     },
-    // get all threads
-    threadsTest: async () => {
-      return Thread.find({})
-        .populate("messages")
-        .populate("user")
-        .populate("match");
+    // get all collections
+    collections: async () => {
+      return Collection.find({}).populate("paintings");
     },
-    // get all the threads for one user by the user's id
-    threads: async (parent, args) => {
-      return Thread.find(args)
-        .populate("messages")
-        .populate("user")
-        .populate("match");
+    // get all the liked collections for one user by the user's id
+    likedCollections: async (parent, args) => {
+      return Collection.find(args).populate("paintings");
     },
-    matchthreads: async (parent, args) => {
-      return Thread.find(args)
-        .populate("messages")
-        .populate("user")
-        .populate("match");
+    // get all paintings
+    paintings: async (parent, args) => {
+      return Painting.find({}).populate("collection");
     },
-    // get one thread by id (also might need to query for user's id that is logged in)
-    thread: async (parent, args) => {
-      return Thread.findById(args.id)
-        .populate("messages")
-        .populate("user")
-        .populate("match");
+    painting: async (parent, args) => {
+      return Painting.findOne(args).populate("collection");
+    },
+    // get all paintings in a collection by id 
+    paintingsCollection: async (parent, args) => {
+      return Painting.findOne(args).populate("collection");
     },
     // get all messages
-    messagesTest: async () => {
-      return Message.find({}).populate("thread").populate("user");
+    likedPaintings: async (parent, args) => {
+      return User.find(args).populate("thread").populate("user");
     },
     // get messages by id of the thread
-    messages: async (parent, args) => {
-      return Message.find(args).populate("thread").populate("user");
+    cart: async (parent, args) => {
+      return User.find(args).populate("thread").populate("user");
     },
     // By adding context to our query, we can retrieve the logged in user without specifically searching for them
     me: async (parent, args, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate("profile");
+        return User.findOne({ _id: context.user._id }).populate("likes").populate("cart");
       }
       throw newAuthenticationError("You need to be logged in!");
     },
