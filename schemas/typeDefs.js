@@ -50,45 +50,43 @@ const typeDefs = gql`
 
     addUser(email: String!, password: String!): Auth
 
-    addProfile(
-      firstName: String!
+    updateUser(id: ID!): User
+
+    removeUser(userId: ID!): User
+
+    addCollection(
+      collectionName: String!
+      description: String!
+    ): Collection
+
+    updateCollection(
+      collectionId: ID!
+      collectionName: String
+      description: String
+    ): Collection
+
+    removeCollection(collectionId: ID!): Collection
+
+    addPainting(
+      title: String!
+      year: String!
+      medium: String!
+      description: String!
+      photo: String!
+      collection: ID
+    ): Painting
+
+    updatePainting(
+      paintingId: ID!
+      title: String
+      year: String
+      medium: String
+      description: String
       photo: String
-      attachmentStyle: String!
-      genderIdentity: String!
-      genderInterests: String!
-      bio: String!
-      birthdate: Date!
-      pronouns: String
-      sexualOrientation: String
-      currentCity: String!
-      user: ID
-    ): Profile
-    updateProfile(
-      profileId: ID!
-      firstName: String
-      photo: String
-      attachmentStyle: String
-      genderIdentity: String
-      genderInterests: String
-      bio: String
-      birthdate: Date
-      pronouns: String
-      sexualOrientation: String
-      currentCity: String
-    ): Profile
-    addThread(
-      text: String
-      user: ID
-      match: ID
-    ): Thread
-    removeThread(threadId: ID!): Thread
-    addMessage(
-      text: String
-      date: Date
-      thread: ID
-      user: ID
-    ): Message
-    removeMessage(messageId: ID!): Message
+    ): Painting
+
+    removePainting(paintingId: ID!): Painting
+
   }
 `;
 
