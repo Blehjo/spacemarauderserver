@@ -81,16 +81,16 @@ const resolvers = {
       return { token, user };
     },
     // update a user to add the profile ID
-    updateUser: async (parent, args, context)=>{
-      if(context.user){
-        return await User.findOneAndUpdate(
-          {_id:args.id},
-          {$set:{user:args.user}},
-          {new:true}
-        );
-      }
-      throw new AuthenticationError("You need to be logged in!");
-    },
+    // updateUser: async (parent, args, context)=>{
+    //   if(context.user){
+    //     return await User.findOneAndUpdate(
+    //       {_id:args.id},
+    //       {$set: { user: args.user }},
+    //       {new:true}
+    //     );
+    //   }
+    //   throw new AuthenticationError("You need to be logged in!");
+    // },
     // delete a user
     removeUser: async (parent, {}, context ) => {
         if (context.user) {

@@ -52,7 +52,7 @@ const typeDefs = gql`
 
     addUser(email: String!, password: String!): Auth
 
-    updateUser(id: ID!): User
+    // updateUser(id: ID!): User
 
     removeUser(userId: ID!): User
 
