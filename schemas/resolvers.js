@@ -99,62 +99,36 @@ const resolvers = {
         }
         throw new AuthenticationError("You need to be logged in!");
     },
-    // create a new profile
-    addProfile: async (
+    // create a new collection
+    addCollection: async (
       parent,
       {
-        firstName,
-        photo,
-        attachmentStyle,
-        genderIdentity,
-        genderInterests,
-        bio,
-        birthdate,
-        pronouns,
-        sexualOrientation,
-        currentCity,
-        user,
+        collectionName,
+        description,
       },
       context
     ) => {
       if (context.user) {
-        const profile = await Profile.create(
+        const collection = await Collection.create(
           {
-            firstName,
-            photo,
-            attachmentStyle,
-            genderIdentity,
-            genderInterests,
-            bio,
-            birthdate,
-            pronouns,
-            sexualOrientation,
-            currentCity,
-            user,
+            collectionName,
+            description,
           }
         );
-        return profile;
+        return collection;
       }
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    // updateProfile: async
-    updateProfile: async (parent, args, context) => {
+    // update collection
+    updateCollection: async (parent, args, context) => {
       if (context.user) {
-        return await Profile.findOneAndUpdate(
-          { _id: args.profileId },
+        return await Collection.findOneAndUpdate(
+          { _id: args.collectionId },
           {
             $set: {
-              firstName: args.firstName,
-              photo: args.photo,
-              attachmentStyle: args.attachmentStyle,
-              genderIdentity: args.genderIdentity,
-              genderInterests: args.genderInterests,
-              bio: args.bio,
-              birthdate: args.birthdate,
-              pronouns: args.pronouns,
-              sexualOrientation: args.sexualOrientation,
-              currentCity: args.currentCity,
+              collectionName: args.collectionName,
+              description: args.description,
             },
           },
           { new: true }
@@ -163,61 +137,75 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    // add a thread
-    addThread: async (
+    // delete a collection by the id
+    removeCollection: async (parent, { collectionId }, context) => {
+        if (context.user) {
+          const deletedCollection = await Collection.findOneAndDelete(
+            { _id: collectionId }
+          );
+          return deletedCollection;
+        }
+        throw new AuthenticationError("You need to be logged in!");
+    },
+
+    // add a painting
+    addPainting: async (
       parent,
-      { text, user, match,},
+      { 
+        title, 
+        year, 
+        medium,
+        description,
+        photo,
+        collection,
+      },
       context
     ) => {
       if (context.user) {
-        const thread = await Thread.create({
-          text,
-          user,
-          match,
+        const painting = await Painting.create({
+            title, 
+            year, 
+            medium,
+            description,
+            photo,
+            collection,
         })
-        return thread;
+        return painting;
       }
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    // delete a thread by the id
-    removeThread: async (parent, { threadId }, context) => {
+    // update painting
+    updatePainting: async (parent, args, context) => {
+        if (context.user) {
+          return await Painting.findOneAndUpdate(
+            { _id: args.paintingId },
+            {
+              $set: {
+                title: args.title,
+                year: args.year,
+                medium: args.medium,
+                description: args.description,
+                photo: args.photo,
+              },
+            },
+            { new: true }
+          );
+        }
+        throw new AuthenticationError("You need to be logged in!");
+    },
+
+    // delete a painting by the id
+    removePainting: async (parent, { paintingId }, context) => {
       if (context.user) {
-        const deleteThread = await Thread.findOneAndDelete(
-          { _id: threadId }
+        const deletedPainting = await Painting.findOneAndDelete(
+          { _id: paintingId }
         );
-        return deleteThread;
+        return deletedPainting;
       }
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    // add a message
-    addMessage: async (
-      parent,
-      {text, date, thread, user },
-      context
-    ) => {
-      if (context.user) {
-        const message = await Message.create({
-          text,
-          date,
-          thread,
-          user,
-        });
-        return message;
-      }
-      throw new AuthenticationError("You need to be logged in!");
-    },
-
-    // delete a message by id look at activity 12 resolvers
-    removeMessage: async (parent, { messageId }, context) => {
-      if (context.user) {
-        return Message.findOneAndDelete(
-          { _id: messageId }
-        );
-      }
-      throw new AuthenticationError("You need to be logged in!");
-    },
   },
 };
 
