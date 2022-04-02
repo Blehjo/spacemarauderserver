@@ -85,7 +85,7 @@ const resolvers = {
       if(context.user){
         return await User.findOneAndUpdate(
           {_id:args.id},
-          {$set:{profile:args.profile}},
+          {$set:{user:args.user}},
           {new:true}
         );
       }
