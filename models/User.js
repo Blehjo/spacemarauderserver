@@ -15,14 +15,14 @@ const userSchema = new Schema({
     },
     likes: [
         {
-            type: String,
-            trim: true,
+            type: Schema.Types.ObjectId,
+            ref: 'Painting',
         },
     ],
     cart: [
         {
-            type: String,
-            trim: true,
+            type: Schema.Types.ObjectId,
+            ref: 'Painting',
         },
     ],
 });

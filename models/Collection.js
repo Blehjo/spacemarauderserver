@@ -9,10 +9,12 @@ const collectionSchema = new Schema({
         type: String,
         required: true,
     },
-    painting: {
-        type: Schema.Types.ObjectId,
-        ref:'Painting'
-    },
+    paintings: [
+        {
+            type: Schema.Types.ObjectId,
+            ref:'Painting'
+        },
+    ],
 })
 
 const Collection = model('Collection', collectionSchema);
