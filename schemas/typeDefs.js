@@ -10,9 +10,9 @@ const typeDefs = gql`
     cart: [Painting]
   }
 
-  type Collection {
+  type Library {
     _id: ID!
-    collectionName: String!
+    libraryName: String!
     description: String!
     paintings: [Painting]
   }
@@ -24,7 +24,7 @@ const typeDefs = gql`
     medium: String!
     description: String!
     photo: String!
-    collection: Collection
+    library: Library
   }
 
   type Auth {
@@ -36,12 +36,12 @@ const typeDefs = gql`
     users: [User]
     user(id: ID!): User
     userprofile(user:ID!): User
-    collections: [Collection]
-    collection(collection: ID!): Collection
-    likedCollections(user: ID!): [Collection]
+    libraries: [Library]
+    library(library: ID!): Library
+    likedLibraries(user: ID!): [Library]
     paintings: [Painting]
     painting(painting: ID!): Painting
-    paintingsCollection(collection: ID!): [Painting]
+    paintingsLibrary(library: ID!): [Painting]
     likedPaintings(user: ID!): [Painting]
     cart(user: ID!): [Painting]
     me: User
@@ -56,18 +56,18 @@ const typeDefs = gql`
 
     removeUser(userId: ID!): User
 
-    addCollection(
-      collectionName: String!
+    addLibrary(
+      libraryName: String!
       description: String!
-    ): Collection
+    ): Library
 
-    updateCollection(
-      collectionId: ID!
-      collectionName: String
+    updateLibrary(
+      libraryId: ID!
+      libraryName: String
       description: String
-    ): Collection
+    ): Library
 
-    removeCollection(collectionId: ID!): Collection
+    removeLibrary(libraryId: ID!): Library
 
     addPainting(
       title: String!
@@ -75,7 +75,7 @@ const typeDefs = gql`
       medium: String!
       description: String!
       photo: String!
-      collection: ID
+      library: ID
     ): Painting
 
     updatePainting(

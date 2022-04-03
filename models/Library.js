@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
-const collectionSchema = new Schema({
-    collectionName: {
+const librarySchema = new Schema({
+    libraryName: {
         type: String,
         required: true,
     },
@@ -17,6 +17,6 @@ const collectionSchema = new Schema({
     ],
 })
 
-const Collection = model('Collection', collectionSchema);
+const Library = model('Library', librarySchema);
 
-module.exports = Collection;
+module.exports = Library;

@@ -22,9 +22,9 @@ const paintingSchema = new Schema({
         type: String,
         required: true,
     },
-    collection: {
+    library: {
         type: Schema.Types.ObjectId,
-        ref:'Collection'
+        ref:'Library'
     },
 })
 

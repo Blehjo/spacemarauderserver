@@ -1,5 +1,5 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { Painting, Collection, User } = require("../models");
+const { Painting, Library, User } = require("../models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
@@ -16,24 +16,24 @@ const resolvers = {
     userprofile: async (parent, args) => {
       return User.findOne(args).populate("likes").populate("cart");
     },
-    // get all collections
-    collections: async () => {
-      return Collection.find({}).populate("paintings");
+    // get all libraries
+    libraries: async () => {
+      return Library.find({}).populate("paintings");
     },
-    // get all the liked collections for one user by the user's id
-    likedCollections: async (parent, args) => {
-      return Collection.find(args).populate("paintings");
+    // get all the liked libraries for one user by the user's id
+    likedLibraries: async (parent, args) => {
+      return Library.find(args).populate("paintings");
     },
     // get all paintings
     paintings: async (parent, args) => {
-      return Painting.find({}).populate("collection");
+      return Painting.find({}).populate("library");
     },
     painting: async (parent, args) => {
-      return Painting.findOne(args).populate("collection");
+      return Painting.findOne(args).populate("library");
     },
-    // get all paintings in a collection by id 
-    paintingsCollection: async (parent, args) => {
-      return Painting.findOne(args).populate("collection");
+    // get all paintings in a library by id 
+    paintingsLibrary: async (parent, args) => {
+      return Painting.findOne(args).populate("library");
     },
     // get all messages
     likedPaintings: async (parent, args) => {
@@ -99,35 +99,35 @@ const resolvers = {
         }
         throw new AuthenticationError("You need to be logged in!");
     },
-    // create a new collection
-    addCollection: async (
+    // create a new library
+    addLibrary: async (
       parent,
       {
-        collectionName,
+        libraryName,
         description,
       },
       context
     ) => {
       if (context.user) {
-        const collection = await Collection.create(
+        const library = await Library.create(
           {
-            collectionName,
+            libraryName,
             description,
           }
         );
-        return collection;
+        return library;
       }
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    // update collection
-    updateCollection: async (parent, args, context) => {
+    // update library
+    updateLibrary: async (parent, args, context) => {
       if (context.user) {
-        return await Collection.findOneAndUpdate(
-          { _id: args.collectionId },
+        return await Library.findOneAndUpdate(
+          { _id: args.libraryId },
           {
             $set: {
-              collectionName: args.collectionName,
+              libraryName: args.libraryName,
               description: args.description,
             },
           },
@@ -137,13 +137,13 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    // delete a collection by the id
-    removeCollection: async (parent, { collectionId }, context) => {
+    // delete a library by the id
+    removeLibrary: async (parent, { libraryId }, context) => {
         if (context.user) {
-          const deletedCollection = await Collection.findOneAndDelete(
-            { _id: collectionId }
+          const deletedLibrary = await Library.findOneAndDelete(
+            { _id: libraryId }
           );
-          return deletedCollection;
+          return deletedLibrary;
         }
         throw new AuthenticationError("You need to be logged in!");
     },
@@ -157,7 +157,7 @@ const resolvers = {
         medium,
         description,
         photo,
-        collection,
+        library,
       },
       context
     ) => {
@@ -168,7 +168,7 @@ const resolvers = {
             medium,
             description,
             photo,
-            collection,
+            library,
         })
         return painting;
       }
