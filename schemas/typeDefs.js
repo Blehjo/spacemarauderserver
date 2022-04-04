@@ -71,7 +71,7 @@ const typeDefs = gql`
 
     addPainting(
       title: String!
-      year: String!
+      year: DATE!
       medium: String!
       description: String!
       photo: String!
@@ -81,7 +81,7 @@ const typeDefs = gql`
     updatePainting(
       paintingId: ID!
       title: String
-      year: String
+      year: DATE
       medium: String
       description: String
       photo: String
